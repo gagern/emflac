@@ -1,0 +1,42 @@
+{
+  "name": "emflac",
+  "version": "0.1.0",
+  "description": "FLAC audio codec compiled using emscripten",
+  "main": "emflac.js",
+  "bin": {
+    "flac": "cli.js"
+  },
+  "scripts": {
+    "prepublish": "make",
+    "test": "$NODE emflac.js --version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gagern/emflac.git"
+  },
+  "keywords": [
+    "flac",
+    "audio",
+    "compression",
+    "decompression",
+    "lossless",
+    "emscripten",
+    "cli"
+  ],
+  "author": "Martin von Gagern",
+  "license": "GPL-2.0+",
+  "bugs": {
+    "url": "https://github.com/gagern/emflac/issues"
+  },
+  "homepage": "https://github.com/gagern/emflac#readme",
+  "files": [
+    "emflac.js",
+    "cli.js",
+    "README*",
+    "COPYING*",
+    "NOTICE*",
+    "flac/AUTHORS*",
+    "flac/README*",
+    "flac/COPYING*"
+  ]
+}

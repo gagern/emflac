@@ -1,0 +1,14 @@
+#!/bin/sh
+
+here="`dirname "$0"`"
+
+for i in echo ""; do
+    $i emcc -static \
+       -O3 \
+       --pre-js $here/head.js --post-js $here/tail.js \
+       --memory-init-file 0 -s MEM_INIT_METHOD=2 \
+       -s ALLOW_MEMORY_GROWTH=0 \
+       -s ASM_JS=1 \
+       -s INVOKE_RUN=0 \
+       "$@"
+done

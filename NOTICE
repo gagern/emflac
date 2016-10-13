@@ -1,0 +1,26 @@
+The sources of the emflac project itself are covered by the MIT license.
+The sources of the FLAC library are covered by the Xiph BSD-like license.
+The sources of the flac command line tool are subject to the GPL license.
+Some other used sources are subject to one of the above or the LGPL license.
+The resulting binaries built from all of these are subject to the GPL license.
+
+See the files COPYING.* in this directory and the flac subdirectory
+(or git submodule) for the explicit texts of the respective licenses.
+
+
+emflac - emscripten-compiled version of the FLAC codec
+Copyright (C) 2016  Martin von Gagern
+
+
+FLAC - Free Lossless Audio Codec
+Copyright (C) 2001-2009  Josh Coalson
+Copyright (C) 2011-2014  Xiph.Org Foundation
+
+Quoting from flac/README: FLAC is comprised of several
+components distributed under different licenses.  The codec libraries
+are distributed under Xiph.Org's BSD-like license (see the file
+COPYING.Xiph in this distribution).  All other programs, libraries, and
+plugins are distributed under the LGPL or GPL (see COPYING.LGPL and
+COPYING.GPL).  The documentation is distributed under the Gnu FDL (see
+COPYING.FDL).  Each file in the FLAC distribution contains at the top the
+terms under which it may be distributed.
