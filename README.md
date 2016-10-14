@@ -9,9 +9,23 @@ using [emscripten][emscripten].
 So it's fully JavaScript, but with most of the features and quality
 you would expect from the C version.
 
-## Command-line interface in Node
+## Getting emflac
 
-This package [is available via npm][npmjs]. It is called `emflac`.
+Emflac is [available via npm][npmjs].
+`npm install emflac` should install it into your current directory or project.
+This is the preferred means of obtaining a compiled source file
+even if you intend to use it outside Node.
+The source repository does not contain the compiled files.
+
+## The flac tool
+
+The FLAC reference implementation comes with several components.
+One is the library *libFLAC*, another is the command line tool *flac*.
+While reasonable bindings to *libFLAC* are still under development,
+emflac does offer different kinds of access to the command-line tool.
+
+### As a command-line tool
+
 Installing the package using `npm install emflac` will provide you with
 a script called `node_modules/.bin/flac` which resembles the command-line
 utility of the same name from the official sources.
@@ -21,6 +35,8 @@ export PATH=node_modules/.bin:$PATH # automatically done in npm scripts
 flac foo.wav                        # creates foo.flac
 flac -d -o foo2.wav foo.flac        # foo.wav and foo2.wav should sound the same
 ```
+
+### As a node module
 
 You can also use the module to call the command line utility
 from another piece of code, like this:
@@ -71,7 +87,7 @@ The methods `FS_readFile` and `getExitStatus` are not commonly found
 in emscripten-compiled modules, but specific to this module here.
 Their use is demonstrated in the example above.
 
-## Use as a web worker
+### As a web worker
 
 The file [`useWorker.html`][useWorker] demonstrates how the codec
 can be used from within a browser.
@@ -113,16 +129,46 @@ In case of an error, the resulting message is
 }
 ```
 
+## Decompression tool
+
+The file `decompress.js` provides more direct bindings to
+the stream decompression module of *libFLAC*.
+It does so using a fraction of the size of the full `emflac.js` script,
+and is also subject only to the [MIT][CMIT] license of *emflac*
+and the [BSD-style license][CXiph] of *libFLAC*,
+as opposed to the [GPL license][CGPL] of the full `flac` tool.
+
+These improvements come at a cost, though.
+It only supports WAV output, 16 bits per sample, one or two channels.
+And only on little-endian systems.
+
+### decodeSync(‹Uint8Array›[, ‹options›]) → ‹Uint8Array›
+
+The script `decompress.js` exports a single symbol
+called `emflac.decodeSync` in the browser
+or `decodeSync` when used as a Node module.
+Input is a `Uint8Array` representing the contents of the compressed file.
+Output is a `Uint8Array` giving the corresponding WAV file.
+Possible options include `TOTAL_MEMORY` and similar.
+
+### Web worker decompression
+
+The decompression tool can employ the same kind of web-worker protocol
+as the full `emflac.js` script, except it's restricted to those settings
+that actually make sense for its limited scope.
+This includes `id`, `data`, `error` and `stack`
+but excludes `arguments`, `stdout`, `stderr` and `exitStatus`.
+
 ## Convenience functions
 
-It is to be expected that given enough time I will come up
-with some convenience functions for common tasks
-like encoding or decoding a whole file.
-These are not provided at the moment, though.
+While `decodeSync` is a first step towards providing conventient-to-use
+functions for common tasks, more of these may be added to the project over time.
+It is unclear whether these would end up in one of the existing output files
+or in separate files tailored for their specific needs.
 
 ## Library access
 
-Currently the symbols from libFLAC are not exported by the module.
+Currently the symbols from libFLAC are not exported by the generated modules.
 This may change in a future version.
 If you have an application where you would need some of these functions
 exported, feel free to file a ticket and request adding them to the code.
@@ -145,6 +191,8 @@ are covered by the GPL, and since that is the strictest of all these licenses,
 this makes the final binary (i.e. emscripten output) GPL-licensed.
 So while you may use part of this infrastructure under MIT license,
 you have to conform to GPL for the project as a whole.
+
+The decoder has more relaxed licensing, as described above.
 
 [flac]: https://xiph.org/flac/
 [refimpl]: https://xiph.org/flac/download.html

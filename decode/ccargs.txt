@@ -1,0 +1,12 @@
+-static -Wall -O3 --closure 1
+--pre-js decode/head.js --post-js decode/tail.js
+--memory-init-file 0 -s MEM_INIT_METHOD=2
+-s ALLOW_MEMORY_GROWTH=0
+-s ASM_JS=1
+-s INVOKE_RUN=0
+-s NO_FILESYSTEM=1
+-s EXPORTED_RUNTIME_METHODS='[]'
+-s EXPORTED_FUNCTIONS='["_decodeSyncCore"]'
+--js-library decode/lib.js
+-Iflac/include -Lflac/objs/release/lib
+-o decode.js decode/bind.c -lFLAC

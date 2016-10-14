@@ -26,7 +26,7 @@ PARTS = $(LIBS) $(BINS)
 
 FLACJS = flac/objs/$(CONFIG)/bin/flac.js
 
-default: emflac.js
+default: emflac.js decode.js
 
 all: $(PARTS)
 
@@ -51,3 +51,8 @@ flac: EXTRA_MAKEARGS = PROGRAM_NAME=flac.js
 
 emflac.js: flac
 	@if test $(FLACJS) -nt $@; then cp -v $(FLACJS) $@; else :; fi
+
+DECODE_SRCS = ccargs.txt bind.c lib.js head.js tail.js
+
+decode.js: $(DECODE_SRCS:%=decode/%) libFLAC
+	emcc $(shell paste -d' ' -s decode/ccargs.txt ) $(LINKFLAGS)
