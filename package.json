@@ -1,6 +1,6 @@
 {
   "name": "emflac",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "FLAC audio codec compiled using emscripten",
   "main": "emflac.js",
   "bin": {
