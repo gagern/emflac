@@ -91,6 +91,9 @@ Their use is demonstrated in the example above.
 
 The file [`useWorker.html`][useWorker] demonstrates how the codec
 can be used from within a browser.
+You can also visit https://gagern.github.io/emflac/ to see this in action
+without installing anything (apart from a decent and recent browser).
+
 The worker expects messages of the form
 
 ```js
