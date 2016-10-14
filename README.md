@@ -11,7 +11,7 @@ you would expect from the C version.
 
 ## Command-line interface in Node
 
-This package [is available from npm][npm]. It is called `emflac`.
+This package [is available via npm][npmjs]. It is called `emflac`.
 Installing the package using `npm install emflac` will provide you with
 a script called `node_modules/.bin/flac` which resembles the command-line
 utility of the same name from the official sources.
