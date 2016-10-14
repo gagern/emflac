@@ -1,6 +1,6 @@
 # emflac
 
-**JavaScript version of the Free Lossless Audio Codec (FLAC).**
+**JavaScript version of the [Free Lossless Audio Codec][flac] (FLAC).**
 
 The core of the code here was compiled from
 version 1.3.1
@@ -11,14 +11,15 @@ you would expect from the C version.
 
 ## Command-line interface in Node
 
-Installing the package as a `npm` dependency will provide you with
+This package [is available from npm][npm]. It is called `emflac`.
+Installing the package using `npm install emflac` will provide you with
 a script called `node_modules/.bin/flac` which resembles the command-line
 utility of the same name from the official sources.
 
 ```sh
 export PATH=node_modules/.bin:$PATH # automatically done in npm scripts
-flac foo.wav # creates foo.flac
-flac -d -o foo2.wav foo.flac # foo.wav and foo2.wav should sound the same
+flac foo.wav                        # creates foo.flac
+flac -d -o foo2.wav foo.flac        # foo.wav and foo2.wav should sound the same
 ```
 
 You can also use the module to call the command line utility
@@ -70,6 +71,48 @@ The methods `FS_readFile` and `getExitStatus` are not commonly found
 in emscripten-compiled modules, but specific to this module here.
 Their use is demonstrated in the example above.
 
+## Use as a web worker
+
+The file [`useWorker.html`][useWorker] demonstrates how the codec
+can be used from within a browser.
+The worker expects messages of the form
+
+```js
+{
+  "id": ‹clonable value›,
+  "arguments": ["‹arg1›", "‹arg2›", …],
+  "data": ‹ArrayBuffer›
+}
+```
+
+If the first argument is `-d`, this will decode FLAC to WAV.
+Otherwise a WAV to FLAC encoding is performed.
+The given data is taken as the input of the operation.
+If the operation was successful, the reply is a message like
+
+```js
+{
+  "id": ‹copied from input›,
+  "stderr": "",
+  "stdout": "",
+  "exitStatus": 0,
+  "data": ‹ArrayBuffer›
+}
+```
+
+In case of an error, the resulting message is
+
+```js
+{
+  "id": ‹copied from input›,
+  "exitStatus": ‹int or undefined›,
+  "stdout": "‹program output›",
+  "stderr": "‹program messages›",
+  "error": "‹message›",
+  "stack": ‹string or undefined›
+}
+```
+
 ## Convenience functions
 
 It is to be expected that given enough time I will come up
@@ -103,9 +146,11 @@ this makes the final binary (i.e. emscripten output) GPL-licensed.
 So while you may use part of this infrastructure under MIT license,
 you have to conform to GPL for the project as a whole.
 
+[flac]: https://xiph.org/flac/
 [refimpl]: https://xiph.org/flac/download.html
 [emscripten]: https://kripken.github.io/emscripten-site/index.html
 [npmjs]: https://www.npmjs.com/package/emflac
+[useWorker]: https://github.com/gagern/emflac/blob/master/useWorker.html
 [CMIT]: https://spdx.org/licenses/MIT.html#licenseText
 [CXiph]: https://git.xiph.org/?p=flac.git;a=blob;f=COPYING.Xiph;h=c0361fd97ee56441037b4ab7df8e5a71b07e38fc;hb=0e11f73eabd3544f59937d0a0d8e076d7c9c2d1d
 [CLGPL]: https://git.xiph.org/?p=flac.git;a=blob;f=COPYING.LGPL;h=5ab7695ab8cabe0c5c8a814bb0ab1e8066578fbb;hb=0e11f73eabd3544f59937d0a0d8e076d7c9c2d1d
